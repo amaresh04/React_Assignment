@@ -1,67 +1,84 @@
 import React from 'react'
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'
 import { addUser } from '../../store/actions'
 import { useDispatch } from 'react-redux'
+import Input from '../../common/components/Input/Input';
+import Button from '../../common/components/Button/Button';
+import Textarea from '../../common/components/TextArea/TextArea';
+import { validationRules } from '../../common/validations';
 import styles from './AddUserForm.module.css'
 
 const AddUserForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        defaultValues: {
-        firstname :'',
-        lastname :'',
-        email: '',
-        mobile: '',
-        address:''
-      }
+    const { register, control, handleSubmit, formState: { errors } } = useForm({
+        mode: 'onSubmit',
+        defaultValues: { firstName: '', lastName: '', email: '', contactNumber: '', address: '' }
     });
-    const onSubmit = (data) => {
-        console.log(data);
+    const data = useWatch({
+        control
+    });
+    const onSubmit = () => {
         dispatch(addUser(data))
         navigate('/userlist')
-    }
+    };
     return (
         <div className={styles.addUserForm}>
             <h1> Add User </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input
-                    placeholder='FirstName'
-                    {...register('firstname')}
+                <Input
+                    type='text'
+                    label='First Name'
+                    name="firstName"
+                    value={data.firstName || ''}
+                    register={register}
+                    rules={validationRules.firstName}
+                    error={errors?.firstName?.message}
                 />
-                <input
-                    placeholder='LastName'
-                    {...register('lastname')}
+                <Input
+                    type='text'
+                    label='Last Name'
+                    name="lastName"
+                    value={data.lastName || ''}
+                    register={register}
+                    rules={validationRules.lastName}
+                    error={errors?.lastName?.message}
+                    notShowErrorMessage={true}
                 />
-                <input
-                    placeholder='Email'
-                    {...register('email',
-                        {
-                            required: true,
-                            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-                        })}
+                <Input
+                    type='email'
+                    label='Eamil'
+                    name="email"
+                    value={data.email || ''}
+                    register={register}
+                    rules={validationRules.email}
+                    error={errors?.email?.message}
                 />
-                {errors.email && <p className="error">Please Enter Valid Email</p>}
-                <input
-                    placeholder='Mobile'
-                    {...register('mobile',
-                        {
-                            required: true,
-                            pattern: /^(\+\d{1,3}[- ]?)?\d{10}$/
-                        })}
+                <Input
+                    type='text'
+                    label='Mobile Number'
+                    name="contactNumber"
+                    value={data.contactNumber || ''}
+                    register={register}
+                    rules={validationRules.contactNumber}
+                    error={errors?.contactNumber?.message}
+                    
                 />
-                {errors.mobile && <p className="error">Please Enter Valid Mobile Number</p>}
+                <Textarea
+                    type='textarea'
+                    label='Address'
+                    name="address"
+                    value={data.address || ''}
+                    register={register}
+                    rules={validationRules.address}
+                    error={errors?.address?.message}
+                />
 
-                <textarea
-                    placeholder='Address'
-                    {...register('address')}
+                <Button
+                    text='Submit'
+                    onClick={handleSubmit(onSubmit)}
                 />
-                <input type="submit" />
             </form>
         </div>
     )

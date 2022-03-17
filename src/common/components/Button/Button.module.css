@@ -1,0 +1,11 @@
+.buttonContainer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+  button {
+    background: #132242;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 0px;
+}

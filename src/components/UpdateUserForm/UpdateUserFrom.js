@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import Input from '../../common/components/Input/Input';
+import Button from '../../common/components/Button/Button';
+import Textarea from '../../common/components/TextArea/TextArea';
+import { validationRules } from '../../common/validations';
 import styles from './UpdateUserForm.module.css'
 import { updateUser } from '../../store/actions'
 
@@ -11,12 +15,12 @@ const UpdateUserFrom = () => {
     const navigate = useNavigate()
     const { id } = useParams()
     const { users } = useSelector(state => state.user)
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-    } = useForm({defaultValues: { firstname: '',lastname: '', email: '',mobile: '',address: '' }
+    const { register, control, handleSubmit, setValue, formState: { errors } } = useForm({
+        mode: 'onSubmit',
+        defaultValues: { firstName: '', lastName: '', email: '', contactNumber: '', address: '' }
+    });
+    const data = useWatch({
+        control
     });
     const onSubmit = (data) => {
         let allUsers = [...users]
@@ -25,13 +29,14 @@ const UpdateUserFrom = () => {
         navigate('/userlist')
     }
 
+
     useEffect(() => {
         if (users.length) {
             const currentUser = users[id]
-            setValue("firstname", currentUser.firstname)
-            setValue("lastname", currentUser.lastname)
+            setValue("firstName", currentUser.firstName)
+            setValue("lastName", currentUser.lastName)
             setValue("email", currentUser.email)
-            setValue("mobile", currentUser.mobile)
+            setValue("contactNumber", currentUser.contactNumber)
             setValue("address", currentUser.address)
         }
     }, [])
@@ -40,38 +45,57 @@ const UpdateUserFrom = () => {
         <div className={styles.editUserrForm}>
             <h1> Update User Form </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input
-                    placeholder='FirstName'
-                    {...register('firstname')}
+                <Input
+                    type='text'
+                    label='First Name'
+                    name="firstName"
+                    value={data.firstName || ''}
+                    register={register}
+                    rules={validationRules.firstName}
+                    error={errors?.firstName?.message}
                 />
-                <input
-                    placeholder='LastName'
-                    {...register('lastname')}
+                <Input
+                    type='text'
+                    label='Last Name'
+                    name="lastName"
+                    value={data.lastName || ''}
+                    register={register}
+                    rules={validationRules.lastName}
+                    error={errors?.lastName?.message}
                 />
-                <input
-                    placeholder='Email'
-                    {...register('email',
-                        {
-                            required: true,
-                            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-                        })}
+                <Input
+                    type='email'
+                    label='Eamil'
+                    name="email"
+                    value={data.email || ''}
+                    register={register}
+                    rules={validationRules.email}
+                    error={errors?.email?.message}
                 />
-                {errors.email && <p className="error">Please Enter Valid Email</p>}
-                <input
-                    placeholder='Mobile'
-                    {...register('mobile',
-                        {
-                            required: true,
-                            pattern: /^(\+\d{1,3}[- ]?)?\d{10}$/
-                        })}
+                <Input
+                    type='text'
+                    label='Mobile Number'
+                    name="contactNumber"
+                    value={data.contactNumber || ''}
+                    register={register}
+                    rules={validationRules.contactNumber}
+                    error={errors?.contactNumber?.message}
+                    notShowErrorMessage={false}
                 />
-                {errors.mobile && <p className="error">Please Enter Valid Mobile Number</p>}
+                <Textarea
+                    type='textarea'
+                    label='Address'
+                    name="address"
+                    value={data.address || ''}
+                    register={register}
+                    rules={validationRules.address}
+                    error={errors?.address?.message}
+                />
 
-                <textarea
-                    placeholder='Address'
-                    {...register('address')}
+                <Button
+                    text='Submit'
+                    onClick={handleSubmit(onSubmit)}
                 />
-                <input type="submit" />
             </form>
         </div>
     )

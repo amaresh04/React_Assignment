@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 const UserItem = ({ users, editUser, deleteUser }) => {
   const returnUserList = (user, index) => {
     return <tr key={index}>
-      <td><p>{user.firstname}</p></td>
-      <td><p>{user.lastname}</p></td>
+      <td><p>{user.firstName}</p></td>
+      <td><p>{user.lastName}</p></td>
       <td><p>{user.email}</p></td>
-      <td><p>{user.mobile}</p></td>
+      <td><p>{user.contactNumber}</p></td>
       <td><p>{user.address}</p></td>
       <td>
         <button onClick={() => editUser(index)}>Edit</button>
