@@ -1,0 +1,50 @@
+*{
+  outline: none;
+  box-sizing: border-box;
+}
+.addNewUser{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+.link{
+  color:#132242;
+  padding:5px 10px;
+  font-weight: bold;
+  
+}
+.delete{
+  background: red;
+}
+input:not(button){
+  background: #f7f9fa;
+  border: 1px solid #e5e9ec;
+  padding: 10px 15px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+input[type="submit"]{
+  background: #f26620;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 10px;
+
+}
+.error{
+  color: red;
+  font-size: 12px;
+}
+h1{
+  text-align: center;
+}
+h5{
+  text-align: center;
+}
+textarea{
+  background: #f7f9fa;
+  border: 1px solid #e5e9ec;
+  padding: 10px 15px;
+  width: 100%;
+  margin-bottom: 5px;
+}

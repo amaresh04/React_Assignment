@@ -1,0 +1,6 @@
+.loginForm{
+    max-width: 300px;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+}
